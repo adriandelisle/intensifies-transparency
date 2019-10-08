@@ -20,3 +20,21 @@
 .App-link {
   color: #09d3ac;
 }
+
+.gifSelector label {
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  background-color: #09d3ac;
+  color: #282c34;
+}
+
+.gifSelector label:hover {
+  background-color: #09d3ac45;
+  color: #282c34;
+}
+
+.gifSelector input {
+  opacity: 0;
+  display: none;
+}
