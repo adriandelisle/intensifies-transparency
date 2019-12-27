@@ -54,21 +54,28 @@ class App extends Component<AppProps, AppState> {
         canvas.width = width
         const context = canvas.getContext('2d')
         if (context) {
+          const intensifyConfig = {
+            frames: 6,
+            magnitude: 25,
+            delay: 60,
+          }
           const gif = new Animated_GIF({
             repeat: 0,
             width,
             height,
             disposal: 2,
           })
-          gif.setDelay(30)
+          gif.setDelay(intensifyConfig.delay)
 
-          context.drawImage(img, 0, 0)
-          gif.addFrameImageData(context.getImageData(0, 0, width, height))
-
-          context.clearRect(0, 0, width, height)
-          context.translate(50, 50)
-          context.drawImage(img, 0, 0)
-          gif.addFrameImageData(context.getImageData(0, 0, width, height))
+          for (let i = 0; i < intensifyConfig.frames; i++) {
+            const direction = i % 2 === 0 ? 1 : -1
+            context.clearRect(0, 0, width, height)
+            const x = Math.random() * intensifyConfig.magnitude * direction
+            const y = Math.random() * intensifyConfig.magnitude * direction
+            context.translate(x, y)
+            context.drawImage(img, 0, 0)
+            gif.addFrameImageData(context.getImageData(0, 0, width, height))
+          }
 
           gif.getBlobGIF(async (gifData: Blob) => {
             const gifImage = await loadImage(URL.createObjectURL(gifData))
