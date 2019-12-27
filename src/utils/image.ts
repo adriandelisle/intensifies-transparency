@@ -1,3 +1,5 @@
+import Animated_GIF from 'gif-transparency'
+
 export const getFileUrl: (file: File) => string = (file: File) =>
   URL.createObjectURL(file)
 
@@ -11,4 +13,54 @@ export const loadImage: (url: string) => Promise<HTMLImageElement> = (
     img.src = url
   })
   return imgPromise
+}
+
+export const intensifyImage: (
+  image: HTMLImageElement
+) => Promise<HTMLImageElement> = async (image: HTMLImageElement) => {
+  const { height, width } = image
+  const canvas = document.createElement('canvas')
+  canvas.height = height
+  canvas.width = width
+  const context = canvas.getContext('2d')
+  const maybeGifBlob = new Promise<HTMLImageElement>((resolve, reject) => {
+    if (context) {
+      try {
+        const intensifyConfig = {
+          frames: 6,
+          magnitude: 25,
+          delay: 60,
+        }
+        const gif = new Animated_GIF({
+          repeat: 0,
+          width,
+          height,
+          disposal: 2,
+        })
+        gif.setDelay(intensifyConfig.delay)
+
+        for (let i = 0; i < intensifyConfig.frames; i++) {
+          const direction = i % 2 === 0 ? 1 : -1
+          context.clearRect(0, 0, width, height)
+          const x = Math.random() * intensifyConfig.magnitude * direction
+          const y = Math.random() * intensifyConfig.magnitude * direction
+          context.translate(x, y)
+          context.drawImage(image, 0, 0)
+          gif.addFrameImageData(context.getImageData(0, 0, width, height))
+        }
+
+        gif.getBlobGIF(async (gifData: Blob) => {
+          const gifImage = await loadImage(URL.createObjectURL(gifData))
+          resolve(gifImage)
+          document.body.appendChild(gifImage)
+        })
+      } catch (e) {
+        reject(e)
+      }
+    } else {
+      reject('Context not found')
+    }
+  })
+
+  return maybeGifBlob
 }

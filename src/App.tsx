@@ -1,8 +1,7 @@
 import React, { Component, FunctionComponent } from 'react'
 import logo from './images/atreides-yelling.png'
 import './App.css'
-import Animated_GIF from 'gif-transparency'
-import { getFileUrl, loadImage } from './utils/image'
+import { getFileUrl, loadImage, intensifyImage } from './utils/image'
 
 interface GifSelectorProps {
   onFileSelected: (files: FileList | null) => void
@@ -48,40 +47,7 @@ class App extends Component<AppProps, AppState> {
       if (file) {
         this.setState({ selectedImage: files.item(0) })
         const img = await loadImage(getFileUrl(file))
-        const { height, width } = img
-        const canvas = document.createElement('canvas')
-        canvas.height = height
-        canvas.width = width
-        const context = canvas.getContext('2d')
-        if (context) {
-          const intensifyConfig = {
-            frames: 6,
-            magnitude: 25,
-            delay: 60,
-          }
-          const gif = new Animated_GIF({
-            repeat: 0,
-            width,
-            height,
-            disposal: 2,
-          })
-          gif.setDelay(intensifyConfig.delay)
-
-          for (let i = 0; i < intensifyConfig.frames; i++) {
-            const direction = i % 2 === 0 ? 1 : -1
-            context.clearRect(0, 0, width, height)
-            const x = Math.random() * intensifyConfig.magnitude * direction
-            const y = Math.random() * intensifyConfig.magnitude * direction
-            context.translate(x, y)
-            context.drawImage(img, 0, 0)
-            gif.addFrameImageData(context.getImageData(0, 0, width, height))
-          }
-
-          gif.getBlobGIF(async (gifData: Blob) => {
-            const gifImage = await loadImage(URL.createObjectURL(gifData))
-            document.body.appendChild(gifImage)
-          })
-        }
+        const intensifiedImage = await intensifyImage(img)
       }
     }
   }
