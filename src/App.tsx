@@ -1,37 +1,13 @@
-import React, { Component, FunctionComponent } from 'react'
+import React, { Component } from 'react'
 import logo from './images/atreides-yelling.png'
 import './App.css'
 import { getFileUrl, loadImage, intensifyImage } from './utils/image'
-
-interface GifSelectorProps {
-  onFileSelected: (files: FileList | null) => void
-}
-
-const GifSelector: FunctionComponent<GifSelectorProps> = ({
-  onFileSelected,
-}: GifSelectorProps) => (
-  <div className="gifSelector">
-    <label htmlFor="GifSelector">Select an image to intensify</label>
-    <input
-      type="file"
-      accept="image/*"
-      onChange={e => onFileSelected(e.target.files)}
-      name="GifSelector"
-      id="GifSelector"
-    />
-  </div>
-)
-
-interface PreviewImageProps {
-  url: string
-}
-
-const PreviewImage: FunctionComponent<PreviewImageProps> = ({
-  url,
-}: PreviewImageProps) => <img src={url} alt="Preview of uploaded file" />
+import { GifSelector } from './components/gif-selector'
+import { ImagePreview } from './components/image-preview'
 
 interface AppState {
   selectedImage: File | null
+  intensifiedImage: HTMLImageElement | null
 }
 
 interface AppProps {}
@@ -39,6 +15,7 @@ interface AppProps {}
 class App extends Component<AppProps, AppState> {
   public readonly state: Readonly<AppState> = {
     selectedImage: null,
+    intensifiedImage: null,
   }
 
   onImageSelected = async (files: FileList | null) => {
@@ -48,18 +25,19 @@ class App extends Component<AppProps, AppState> {
         this.setState({ selectedImage: files.item(0) })
         const img = await loadImage(getFileUrl(file))
         const intensifiedImage = await intensifyImage(img)
+        this.setState({ intensifiedImage })
       }
     }
   }
 
   render() {
-    const { selectedImage } = this.state
+    const { intensifiedImage } = this.state
 
     return (
       <div className="App">
         <header className="App-header">
-          <PreviewImage
-            url={selectedImage ? getFileUrl(selectedImage) : logo}
+          <ImagePreview
+            url={intensifiedImage?.src ? intensifiedImage.src : logo}
           />
           <GifSelector onFileSelected={this.onImageSelected} />
         </header>
