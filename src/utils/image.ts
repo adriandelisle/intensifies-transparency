@@ -52,7 +52,6 @@ export const intensifyImage: (
         gif.getBlobGIF(async (gifData: Blob) => {
           const gifImage = await loadImage(URL.createObjectURL(gifData))
           resolve(gifImage)
-          document.body.appendChild(gifImage)
         })
       } catch (e) {
         reject(e)
