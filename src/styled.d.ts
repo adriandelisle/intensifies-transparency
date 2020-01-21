@@ -2,11 +2,15 @@ import 'styled-components'
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    borderRadius: string
-
+    font: string
     colors: {
-      main: string
-      secondary: string
+      background: string
+      buttons: {
+        action: {
+          main: string
+          hover: string
+        }
+      }
     }
   }
 }

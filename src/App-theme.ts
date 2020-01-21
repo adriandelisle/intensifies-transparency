@@ -1,11 +1,15 @@
 import { DefaultTheme } from 'styled-components'
 
 const AppTheme: DefaultTheme = {
-  borderRadius: '5px',
-
+  font: "'Courier New', Courier, monospace",
   colors: {
-    main: 'cyan',
-    secondary: 'magenta',
+    background: '#282c34',
+    buttons: {
+      action: {
+        main: '#e7a61a',
+        hover: '#e833e2',
+      },
+    },
   },
 }
 
