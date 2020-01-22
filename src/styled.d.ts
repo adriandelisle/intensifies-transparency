@@ -11,6 +11,7 @@ declare module 'styled-components' {
           hover: string
         }
       }
+      loading: string
     }
   }
 }

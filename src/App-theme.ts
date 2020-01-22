@@ -10,6 +10,7 @@ const AppTheme: DefaultTheme = {
         hover: '#e833e2',
       },
     },
+    loading: '#1adee7',
   },
 }
 

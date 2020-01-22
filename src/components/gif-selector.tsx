@@ -5,6 +5,7 @@ import styled, { ThemeProvider } from 'styled-components'
 const StyledLabel = styled.label`
   display: block;
   padding: 5px 10px;
+  margin: 14px;
   background-color: ${props => props.theme.colors.buttons.action.main};
   color: #282c34;
   cursor: pointer;
