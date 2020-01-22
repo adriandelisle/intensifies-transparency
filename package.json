@@ -2,6 +2,10 @@
   "name": "intensifies-transparency",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://adriandelisle.github.io/intensifies-transparency/",
+  "devDependencies": {
+    "gh-pages": "2.2.0"
+  },
   "dependencies": {
     "@types/jest": "24.0.25",
     "@types/node": "13.1.4",
@@ -19,7 +23,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
