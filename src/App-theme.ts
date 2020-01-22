@@ -11,6 +11,10 @@ const AppTheme: DefaultTheme = {
       },
     },
     loading: '#1adee7',
+    link: {
+      normal: '#fff',
+      visited: '#ffa8b7',
+    },
   },
 }
 

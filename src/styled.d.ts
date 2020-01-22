@@ -12,6 +12,10 @@ declare module 'styled-components' {
         }
       }
       loading: string
+      link: {
+        normal: string
+        visited: string
+      }
     }
   }
 }
