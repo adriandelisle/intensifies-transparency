@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { getFileUrl, loadImage, intensifyImage } from './utils/image'
-import { GifSelector } from './components/gif-selector'
-import { ImagePreview } from './components/image-preview'
-import { LoadingIndicator } from './components/loading-indicator'
+import { IntensifyImage } from './components/intensify-image'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
 import { Link } from './components/link'
@@ -11,7 +9,6 @@ import styled, { ThemeProvider } from 'styled-components'
 import { AppTheme } from './App-theme'
 
 interface AppState {
-  selectedImage?: File
   intensifiedImage?: HTMLImageElement
   isLoading: Boolean
 }
@@ -31,7 +28,6 @@ const AppBody = styled.section`
 
 class App extends Component<AppProps, AppState> {
   public readonly state: Readonly<AppState> = {
-    selectedImage: undefined,
     intensifiedImage: undefined,
     isLoading: false,
   }
@@ -40,7 +36,7 @@ class App extends Component<AppProps, AppState> {
     if (files) {
       const file = files.item(0)
       if (file) {
-        this.setState({ selectedImage: file, isLoading: true })
+        this.setState({ isLoading: true })
         const img = await loadImage(getFileUrl(file))
         const intensifiedImage = await intensifyImage(img)
         this.setState({ intensifiedImage, isLoading: false })
@@ -55,11 +51,11 @@ class App extends Component<AppProps, AppState> {
       <ThemeProvider theme={AppTheme}>
         <AppBody>
           <Header />
-          {isLoading ? <LoadingIndicator /> : null}
-          {intensifiedImage?.src ? (
-            <ImagePreview url={intensifiedImage?.src} />
-          ) : null}
-          <GifSelector onFileSelected={this.onImageSelected} />
+          <IntensifyImage
+            isLoading={isLoading}
+            onImageSelected={this.onImageSelected}
+            intensifiedImage={intensifiedImage}
+          />
           <Footer>
             To create a silly slack emoji that bounces around with a transparent
             background just upload an image. For best results use{' '}
