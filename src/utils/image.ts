@@ -16,9 +16,19 @@ export const loadImage: (url: string) => Promise<HTMLImageElement> = (
 }
 
 export const intensifyImage: (
-  image: HTMLImageElement
-) => Promise<HTMLImageElement> = async (image: HTMLImageElement) => {
-  const { height, width } = image
+  image: HTMLImageElement,
+  maxWidth?: number
+) => Promise<HTMLImageElement> = async (
+  image: HTMLImageElement,
+  maxWidth: number = 300
+) => {
+  // scaling image to max with
+  const imgHeight = image.height
+  const imgWidth = image.width
+  const width = Math.min(imgWidth, maxWidth)
+  const aspectRatio = imgWidth / imgHeight
+  const height = Math.floor(width / aspectRatio)
+
   const canvas = document.createElement('canvas')
   canvas.height = height
   canvas.width = width
@@ -45,7 +55,17 @@ export const intensifyImage: (
           const x = Math.random() * intensifyConfig.magnitude * direction
           const y = Math.random() * intensifyConfig.magnitude * direction
           context.translate(x, y)
-          context.drawImage(image, 0, 0)
+          context.drawImage(
+            image,
+            0,
+            0,
+            imgWidth,
+            imgHeight,
+            0,
+            0,
+            width,
+            height
+          )
           gif.addFrameImageData(context.getImageData(0, 0, width, height))
         }
 
