@@ -1,24 +1,18 @@
 import Animated_GIF from 'gif-transparency'
 
-export const getFileUrl: (file: File) => string = (file: File) =>
-  URL.createObjectURL(file)
+export const getFileUrl: (file: File) => string = (file: File) => URL.createObjectURL(file)
 
-export const loadImage: (url: string) => Promise<HTMLImageElement> = (
-  url: string
-) => {
+export const loadImage: (url: string) => Promise<HTMLImageElement> = (url: string) => {
   const img = new Image()
   const imgPromise = new Promise<HTMLImageElement>((resolve, reject) => {
     img.onload = () => resolve(img)
-    img.onerror = e => reject(e)
+    img.onerror = (e) => reject(e)
     img.src = url
   })
   return imgPromise
 }
 
-export const intensifyImage: (
-  image: HTMLImageElement,
-  maxWidth?: number
-) => Promise<HTMLImageElement> = async (
+export const intensifyImage: (image: HTMLImageElement, maxWidth?: number) => Promise<HTMLImageElement> = async (
   image: HTMLImageElement,
   maxWidth: number = 300
 ) => {
@@ -55,17 +49,7 @@ export const intensifyImage: (
           const x = Math.random() * intensifyConfig.magnitude * direction
           const y = Math.random() * intensifyConfig.magnitude * direction
           context.translate(x, y)
-          context.drawImage(
-            image,
-            0,
-            0,
-            imgWidth,
-            imgHeight,
-            0,
-            0,
-            width,
-            height
-          )
+          context.drawImage(image, 0, 0, imgWidth, imgHeight, 0, 0, width, height)
           gif.addFrameImageData(context.getImageData(0, 0, width, height))
         }
 

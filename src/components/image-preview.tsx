@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 
+// prettier-ignore
 const ImagePreviewContainer = styled.img`
-  margin: 10px;
+  margin: 10px; 
   background-image: /* tint image */ linear-gradient(
       to right,
       rgba(192, 192, 192, 0.75),
@@ -18,8 +19,6 @@ interface ImagePreviewProps {
   url: string
 }
 
-export const ImagePreview: FunctionComponent<ImagePreviewProps> = ({
-  url,
-}: ImagePreviewProps) => (
+export const ImagePreview: FunctionComponent<ImagePreviewProps> = ({ url }: ImagePreviewProps) => (
   <ImagePreviewContainer src={url} alt="Preview of uploaded file" />
 )

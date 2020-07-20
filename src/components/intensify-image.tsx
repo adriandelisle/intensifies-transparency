@@ -18,17 +18,11 @@ interface IntensifyImageProps {
   onImageSelected: (files?: FileList) => void
 }
 
-const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
-  intensifiedImage,
-  isLoading,
-  onImageSelected,
-}) => {
+const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({ intensifiedImage, isLoading, onImageSelected }) => {
   return (
     <IntensifyImageContainer>
       {isLoading ? <LoadingIndicator /> : null}
-      {intensifiedImage?.src ? (
-        <ImagePreview url={intensifiedImage?.src} />
-      ) : null}
+      {intensifiedImage?.src ? <ImagePreview url={intensifiedImage?.src} /> : null}
       <GifSelector onFileSelected={onImageSelected} />
     </IntensifyImageContainer>
   )

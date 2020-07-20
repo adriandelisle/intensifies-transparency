@@ -16,13 +16,13 @@ interface AppState {
 interface AppProps {}
 
 const AppBody = styled.section`
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.background};
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: ${props => props.theme.font};
+  font-family: ${(props) => props.theme.font};
   color: white;
 `
 
@@ -57,14 +57,10 @@ class App extends Component<AppProps, AppState> {
             intensifiedImage={intensifiedImage}
           />
           <Footer>
-            To create a silly slack emoji that bounces around with a transparent
-            background just upload an image. For best results use{' '}
-            <Link url="https://www.remove.bg/" text="https://www.remove.bg/" />{' '}
-            to remove the background and use a downscaled image.{' '}
-            <Link
-              url="https://github.com/adriandelisle/intensifies-transparency"
-              text="Source"
-            />
+            To create a silly slack emoji that bounces around with a transparent background just upload an image. For
+            best results use <Link url="https://www.remove.bg/" text="https://www.remove.bg/" /> to remove the
+            background and use a downscaled image.{' '}
+            <Link url="https://github.com/adriandelisle/intensifies-transparency" text="Source" />
           </Footer>
         </AppBody>
       </ThemeProvider>

@@ -9,6 +9,4 @@ const FooterContainer = styled.footer`
 
 interface FooterProps {}
 
-export const Footer: FunctionComponent<FooterProps> = ({ children }) => (
-  <FooterContainer>{children}</FooterContainer>
-)
+export const Footer: FunctionComponent<FooterProps> = ({ children }) => <FooterContainer>{children}</FooterContainer>

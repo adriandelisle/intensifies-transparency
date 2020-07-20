@@ -17,8 +17,7 @@ const Loader = styled.div`
     border: 8px solid;
     border-radius: 50%;
     animation: ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: ${props => props.theme.colors.loading} transparent transparent
-      transparent;
+    border-color: ${(props) => props.theme.colors.loading} transparent transparent transparent;
   }
   div:nth-child(1) {
     animation-delay: -0.15s;

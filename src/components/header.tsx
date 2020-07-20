@@ -7,6 +7,4 @@ const HeaderContainer = styled.header`
 
 interface HeaderProps {}
 
-export const Header: FunctionComponent<HeaderProps> = ({ children }) => (
-  <HeaderContainer>{children}</HeaderContainer>
-)
+export const Header: FunctionComponent<HeaderProps> = ({ children }) => <HeaderContainer>{children}</HeaderContainer>
