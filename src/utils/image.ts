@@ -41,7 +41,7 @@ export const removeBackground: (base64Image: string) => Promise<HTMLImageElement
   return loadImage(`data:image/jpeg;base64,${result?.base64img}`)
 }
 
-export const intensifyImage: (image: HTMLImageElement, maxWidth?: number) => Promise<HTMLImageElement> = async (
+export const scaleImage: (image: HTMLImageElement, maxWidth?: number) => Promise<HTMLImageElement> = (
   image: HTMLImageElement,
   maxWidth: number = 300
 ) => {
@@ -51,6 +51,25 @@ export const intensifyImage: (image: HTMLImageElement, maxWidth?: number) => Pro
   const width = Math.min(imgWidth, maxWidth)
   const aspectRatio = imgWidth / imgHeight
   const height = Math.floor(width / aspectRatio)
+
+  const canvas = document.createElement('canvas')
+  canvas.height = height
+  canvas.width = width
+  const context = canvas.getContext('2d')
+  if (context) {
+    context.drawImage(image, 0, 0, imgWidth, imgHeight, 0, 0, width, height)
+  }
+
+  return loadImage(canvas.toDataURL())
+}
+
+export const intensifyImage: (image: HTMLImageElement) => Promise<HTMLImageElement> = async (
+  image: HTMLImageElement
+) => {
+  const imgHeight = image.height
+  const imgWidth = image.width
+  const width = image.width
+  const height = image.height
 
   const canvas = document.createElement('canvas')
   canvas.height = height
