@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getFileUrl, loadImage, intensifyImage } from './utils/image'
+import { getFileUrl, intensifyImage, removeBackground, imageToBase64 } from './utils/image'
 import { IntensifyImage } from './components/intensify-image'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
@@ -37,7 +37,8 @@ class App extends Component<AppProps, AppState> {
       const file = files.item(0)
       if (file) {
         this.setState({ isLoading: true })
-        const img = await loadImage(getFileUrl(file))
+        const base64Image = await imageToBase64(getFileUrl(file))
+        const img = await removeBackground(base64Image)
         const intensifiedImage = await intensifyImage(img)
         this.setState({ intensifiedImage, isLoading: false })
       }

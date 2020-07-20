@@ -1,4 +1,5 @@
 import Animated_GIF from 'gif-transparency'
+import { RemoveBgResult, removeBackgroundFromImageBase64, RemoveBgBase64Options } from 'remove.bg'
 
 export const getFileUrl: (file: File) => string = (file: File) => URL.createObjectURL(file)
 
@@ -10,6 +11,34 @@ export const loadImage: (url: string) => Promise<HTMLImageElement> = (url: strin
     img.src = url
   })
   return imgPromise
+}
+
+export const imageToBase64: (url: string) => Promise<string> = async (url: string) => {
+  const response = await fetch(url)
+  const blob = await response.blob()
+  return await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const result = reader.result?.toString()
+      resolve(result)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}
+
+export const removeBackground: (base64Image: string) => Promise<HTMLImageElement> = async (base64Image: string) => {
+  const options: RemoveBgBase64Options = {
+    base64img: base64Image,
+    apiKey: 'a7X59GiZEEBMi8ReqEgRbxuJ', // normally this shouldn't be in here, but its just a free account and for demo purposes
+    format: 'png',
+    size: 'preview',
+    type: 'auto',
+  }
+
+  const result: RemoveBgResult = await removeBackgroundFromImageBase64(options)
+
+  return loadImage(`data:image/jpeg;base64,${result?.base64img}`)
 }
 
 export const intensifyImage: (image: HTMLImageElement, maxWidth?: number) => Promise<HTMLImageElement> = async (
