@@ -10,7 +10,9 @@ import { AppTheme } from './App-theme'
 
 interface AppState {
   intensifiedImage?: HTMLImageElement
-  isLoading: Boolean
+  isLoading: boolean
+  processingMessage: string
+  useRemoveBg: boolean
 }
 
 interface AppProps {}
@@ -30,25 +32,38 @@ class App extends Component<AppProps, AppState> {
   public readonly state: Readonly<AppState> = {
     intensifiedImage: undefined,
     isLoading: false,
+    processingMessage: '',
+    useRemoveBg: false,
   }
 
+  onRemoveBackgroundChanged = (isChecked: boolean) => this.setState({ useRemoveBg: isChecked })
+
   onImageSelected = async (files?: FileList) => {
+    const { useRemoveBg } = this.state
+
     if (files) {
       const file = files.item(0)
       if (file) {
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true, processingMessage: 'Loading image...' })
         const originalImage = await loadImage(getFileUrl(file))
+        this.setState({ processingMessage: 'Scaling image...' })
         const scaledImage = await scaleImage(originalImage)
-        const base64Image = await imageToBase64(scaledImage.src)
-        const img = await removeBackground(base64Image)
+        let img = scaledImage
+        if (useRemoveBg) {
+          this.setState({ processingMessage: 'Converting to base64...' })
+          const base64Image = await imageToBase64(scaledImage.src)
+          this.setState({ processingMessage: 'Removing background...' })
+          img = await removeBackground(base64Image)
+        }
+        this.setState({ processingMessage: 'Intensifying...' })
         const intensifiedImage = await intensifyImage(img)
-        this.setState({ intensifiedImage, isLoading: false })
+        this.setState({ intensifiedImage, isLoading: false, processingMessage: '' })
       }
     }
   }
 
   render() {
-    const { intensifiedImage, isLoading } = this.state
+    const { intensifiedImage, isLoading, processingMessage } = this.state
 
     return (
       <ThemeProvider theme={AppTheme}>
@@ -57,8 +72,10 @@ class App extends Component<AppProps, AppState> {
           <IntensifyImage
             isLoading={isLoading}
             onImageSelected={this.onImageSelected}
+            onRemoveBackgroundChanged={this.onRemoveBackgroundChanged}
             intensifiedImage={intensifiedImage}
           />
+          {processingMessage}
           <Footer>
             To create a silly slack emoji that bounces around with a transparent background just upload an image. For
             best results use <Link url="https://www.remove.bg/" text="https://www.remove.bg/" /> to remove the
