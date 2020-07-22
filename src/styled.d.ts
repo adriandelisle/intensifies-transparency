@@ -13,6 +13,7 @@ declare module 'styled-components' {
         }
       }
       info: string
+      error: string
       loading: string
       link: {
         normal: string

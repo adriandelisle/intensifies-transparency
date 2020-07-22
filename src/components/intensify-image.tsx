@@ -5,7 +5,8 @@ import { GifSelector } from './gif-selector'
 import { ImagePreview } from './image-preview'
 import { LoadingIndicator } from './loading-indicator'
 import { Checkbox } from './checkbox'
-import { InfoText } from './info-text'
+import { InfoNotifcation } from './info-notification'
+import { ErrorNotifcation } from './error-notification'
 import { Link } from './link'
 
 const IntensifyImageContainer = styled.div`
@@ -24,6 +25,8 @@ const InfoContainer = styled.div`
 interface IntensifyImageProps {
   intensifiedImage?: HTMLImageElement
   isLoading: boolean
+  processingMessage: string
+  hasError: boolean
   onImageSelected: (files?: FileList) => void
   onRemoveBackgroundChanged: (isChecked: boolean) => void
   useRemoveBg: boolean
@@ -33,6 +36,8 @@ interface IntensifyImageProps {
 const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
   intensifiedImage,
   isLoading,
+  processingMessage,
+  hasError,
   onImageSelected,
   onRemoveBackgroundChanged,
   useRemoveBg,
@@ -41,14 +46,16 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
   return (
     <IntensifyImageContainer>
       {isLoading ? <LoadingIndicator /> : null}
+      {processingMessage}
       {intensifiedImage?.src ? <ImagePreview url={intensifiedImage?.src} /> : null}
       <GifSelector onFileSelected={onImageSelected} />
       <InfoContainer>
+        {hasError ? <ErrorNotifcation>Something when wrong please refresh and try again.</ErrorNotifcation> : ''}
         {isRemoveBgDisabled ? (
-          <InfoText>
+          <InfoNotifcation>
             Can't access the <Link url="https://www.remove.bg/" text="remove.bg" /> API right now, please remove the
             background manually.
-          </InfoText>
+          </InfoNotifcation>
         ) : null}
       </InfoContainer>
       <ControlsContainer>
