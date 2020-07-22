@@ -15,6 +15,12 @@ const IntensifyImageContainer = styled.div`
   justify-content: center;
 `
 
+const ControlsContainer = styled.div``
+
+const InfoContainer = styled.div`
+  max-width: 450px;
+`
+
 interface IntensifyImageProps {
   intensifiedImage?: HTMLImageElement
   isLoading: boolean
@@ -37,19 +43,23 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
       {isLoading ? <LoadingIndicator /> : null}
       {intensifiedImage?.src ? <ImagePreview url={intensifiedImage?.src} /> : null}
       <GifSelector onFileSelected={onImageSelected} />
-      {isRemoveBgDisabled ? (
-        <InfoText>
-          Can't access the <Link url="https://www.remove.bg/" text="remove.bg" /> API right now, please remove the
-          background manually
-        </InfoText>
-      ) : null}
-      <Checkbox
-        name="UseRemoveBg"
-        label="Remove background automatically"
-        onChecked={onRemoveBackgroundChanged}
-        isChecked={useRemoveBg}
-        disabled={isRemoveBgDisabled}
-      />
+      <InfoContainer>
+        {isRemoveBgDisabled ? (
+          <InfoText>
+            Can't access the <Link url="https://www.remove.bg/" text="remove.bg" /> API right now, please remove the
+            background manually.
+          </InfoText>
+        ) : null}
+      </InfoContainer>
+      <ControlsContainer>
+        <Checkbox
+          name="UseRemoveBg"
+          label="Remove background automatically"
+          onChecked={onRemoveBackgroundChanged}
+          isChecked={useRemoveBg}
+          disabled={isRemoveBgDisabled}
+        />
+      </ControlsContainer>
     </IntensifyImageContainer>
   )
 }

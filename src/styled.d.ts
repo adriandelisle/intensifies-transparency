@@ -9,8 +9,10 @@ declare module 'styled-components' {
         action: {
           main: string
           hover: string
+          text: string
         }
       }
+      info: string
       loading: string
       link: {
         normal: string
