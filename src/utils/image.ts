@@ -64,8 +64,9 @@ export const scaleImage: (image: HTMLImageElement, maxWidth?: number) => Promise
   return loadImage(canvas.toDataURL())
 }
 
-export const intensifyImage: (image: HTMLImageElement) => Promise<HTMLImageElement> = async (
-  image: HTMLImageElement
+export const intensifyImage: (image: HTMLImageElement, intensity: number) => Promise<HTMLImageElement> = async (
+  image: HTMLImageElement,
+  intensity: number
 ) => {
   const imgHeight = image.height
   const imgWidth = image.width
@@ -77,26 +78,27 @@ export const intensifyImage: (image: HTMLImageElement) => Promise<HTMLImageEleme
   canvas.width = width
   const context = canvas.getContext('2d')
   const maybeGifBlob = new Promise<HTMLImageElement>((resolve, reject) => {
+    const gif = new Animated_GIF({
+      repeat: 0,
+      width,
+      height,
+      disposal: 2,
+    })
+
     if (context) {
       try {
         const intensifyConfig = {
           frames: 6,
-          magnitude: 25,
           delay: 60,
         }
-        const gif = new Animated_GIF({
-          repeat: 0,
-          width,
-          height,
-          disposal: 2,
-        })
+
         gif.setDelay(intensifyConfig.delay)
 
         for (let i = 0; i < intensifyConfig.frames; i++) {
           const direction = i % 2 === 0 ? 1 : -1
           context.clearRect(0, 0, width, height)
-          const x = Math.random() * intensifyConfig.magnitude * direction
-          const y = Math.random() * intensifyConfig.magnitude * direction
+          const x = Math.random() * intensity * direction
+          const y = Math.random() * intensity * direction
           context.translate(x, y)
           context.drawImage(image, 0, 0, imgWidth, imgHeight, 0, 0, width, height)
           gif.addFrameImageData(context.getImageData(0, 0, width, height))
@@ -105,12 +107,16 @@ export const intensifyImage: (image: HTMLImageElement) => Promise<HTMLImageEleme
         gif.getBlobGIF(async (gifData: Blob) => {
           const gifImage = await loadImage(URL.createObjectURL(gifData))
           resolve(gifImage)
+
+          gif.destroy()
         })
       } catch (e) {
         reject(e)
+        gif.destroy()
       }
     } else {
       reject('Context not found')
+      gif.destroy()
     }
   })
 

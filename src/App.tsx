@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import debounce from 'lodash.debounce'
+
 import { getFileUrl, intensifyImage, removeBackground, imageToBase64, scaleImage, loadImage } from './utils/image'
 import { isRemoveBgRateLimited } from './utils/is-remove-bg-rate-limited'
 import { IntensifyImage } from './components/intensify-image'
@@ -8,17 +10,6 @@ import { Link } from './components/link'
 
 import styled, { ThemeProvider } from 'styled-components'
 import { AppTheme } from './App-theme'
-
-interface AppState {
-  intensifiedImage?: HTMLImageElement
-  isLoading: boolean
-  hasError: boolean
-  processingMessage: string
-  useRemoveBg: boolean
-  removeBgRateLimited: boolean
-}
-
-interface AppProps {}
 
 const AppBody = styled.section`
   background-color: ${(props) => props.theme.colors.background};
@@ -31,11 +22,26 @@ const AppBody = styled.section`
   color: white;
 `
 
+interface AppState {
+  intensifiedImage?: HTMLImageElement
+  scaledImage?: HTMLImageElement
+  isLoading: boolean
+  hasError: boolean
+  intensity: number
+  processingMessage: string
+  useRemoveBg: boolean
+  removeBgRateLimited: boolean
+}
+
+interface AppProps {}
+
 class App extends Component<AppProps, AppState> {
   public readonly state: Readonly<AppState> = {
     intensifiedImage: undefined,
+    scaledImage: undefined,
     isLoading: false,
     hasError: false,
+    intensity: 5,
     processingMessage: '',
     useRemoveBg: false,
     removeBgRateLimited: false,
@@ -47,8 +53,33 @@ class App extends Component<AppProps, AppState> {
 
   onRemoveBackgroundChanged = (isChecked: boolean) => this.setState({ useRemoveBg: isChecked })
 
+  intensify = async (img: HTMLImageElement, intensity: number) => {
+    try {
+      this.setState({ processingMessage: 'Intensifying...' })
+      const intensifiedImage = await intensifyImage(img, intensity)
+      this.setState({ intensifiedImage, isLoading: false, processingMessage: '' })
+    } catch (error) {
+      this.setState({ hasError: true })
+      console.log(error)
+    } finally {
+      this.setState({ isLoading: false })
+    }
+  }
+
+  onIntensityChanged = debounce(
+    (intensity: number) => {
+      const { scaledImage } = this.state
+      this.setState({ intensity })
+      if (scaledImage) {
+        this.intensify(scaledImage, intensity)
+      }
+    },
+    50,
+    { trailing: true }
+  )
+
   onImageSelected = async (files?: FileList) => {
-    const { useRemoveBg } = this.state
+    const { intensity, useRemoveBg } = this.state
 
     if (files) {
       const file = files.item(0)
@@ -57,20 +88,20 @@ class App extends Component<AppProps, AppState> {
           this.setState({ isLoading: true, processingMessage: 'Loading image...' })
           const originalImage = await loadImage(getFileUrl(file))
           this.setState({ processingMessage: 'Scaling image...' })
-          const scaledImage = await scaleImage(originalImage)
-          let img = scaledImage
+          let scaledImage = await scaleImage(originalImage)
           if (useRemoveBg) {
-            this.setState({ processingMessage: 'Converting to base64...' })
+            this.setState({ isLoading: true, processingMessage: 'Converting to base64...' })
             const base64Image = await imageToBase64(scaledImage.src)
             this.setState({ processingMessage: 'Removing background...' })
-            img = await removeBackground(base64Image)
+            scaledImage = await removeBackground(base64Image)
           }
-          this.setState({ processingMessage: 'Intensifying...' })
-          const intensifiedImage = await intensifyImage(img)
-          this.setState({ intensifiedImage, isLoading: false, processingMessage: '' })
+          this.intensify(scaledImage, intensity)
+          this.setState({ scaledImage })
         } catch (error) {
           this.setState({ hasError: true })
           console.log(error)
+        } finally {
+          this.setState({ isLoading: false })
         }
       }
     }
@@ -88,6 +119,7 @@ class App extends Component<AppProps, AppState> {
             processingMessage={processingMessage}
             onImageSelected={this.onImageSelected}
             onRemoveBackgroundChanged={this.onRemoveBackgroundChanged}
+            onIntensityChanged={this.onIntensityChanged}
             intensifiedImage={intensifiedImage}
             useRemoveBg={useRemoveBg}
             hasError={hasError}

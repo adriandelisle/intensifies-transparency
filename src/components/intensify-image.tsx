@@ -5,6 +5,7 @@ import { GifSelector } from './gif-selector'
 import { ImagePreview } from './image-preview'
 import { LoadingIndicator } from './loading-indicator'
 import { Checkbox } from './checkbox'
+import { IntensitySlider } from './intensity-slider'
 import { InfoNotifcation } from './info-notification'
 import { ErrorNotifcation } from './error-notification'
 import { Link } from './link'
@@ -29,6 +30,7 @@ interface IntensifyImageProps {
   hasError: boolean
   onImageSelected: (files?: FileList) => void
   onRemoveBackgroundChanged: (isChecked: boolean) => void
+  onIntensityChanged: (value: number) => void
   useRemoveBg: boolean
   isRemoveBgDisabled: boolean
 }
@@ -40,14 +42,15 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
   hasError,
   onImageSelected,
   onRemoveBackgroundChanged,
+  onIntensityChanged,
   useRemoveBg,
   isRemoveBgDisabled,
 }) => {
   return (
     <IntensifyImageContainer>
+      {intensifiedImage?.src && !isLoading ? <ImagePreview url={intensifiedImage?.src} /> : null}
       {isLoading ? <LoadingIndicator /> : null}
       {processingMessage}
-      {intensifiedImage?.src ? <ImagePreview url={intensifiedImage?.src} /> : null}
       <GifSelector onFileSelected={onImageSelected} />
       <InfoContainer>
         {hasError ? <ErrorNotifcation>Something when wrong please refresh and try again.</ErrorNotifcation> : ''}
@@ -66,6 +69,7 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
           isChecked={useRemoveBg}
           disabled={isRemoveBgDisabled}
         />
+        <IntensitySlider onChange={onIntensityChanged} />
       </ControlsContainer>
     </IntensifyImageContainer>
   )
