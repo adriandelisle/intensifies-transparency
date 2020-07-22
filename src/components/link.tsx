@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { AppTheme } from '../App-theme'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 
 const StyledAnchor = styled.a`
   :link {
@@ -28,9 +27,7 @@ interface LinkProps {
 }
 
 export const Link: FunctionComponent<LinkProps> = ({ url, text }) => (
-  <ThemeProvider theme={AppTheme}>
-    <StyledAnchor href={url} rel="noreferrer noopener" target="_blank">
-      {text}
-    </StyledAnchor>
-  </ThemeProvider>
+  <StyledAnchor href={url} rel="noreferrer noopener" target="_blank">
+    {text}
+  </StyledAnchor>
 )

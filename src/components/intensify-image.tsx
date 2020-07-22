@@ -5,6 +5,8 @@ import { GifSelector } from './gif-selector'
 import { ImagePreview } from './image-preview'
 import { LoadingIndicator } from './loading-indicator'
 import { Checkbox } from './checkbox'
+import { InfoText } from './info-text'
+import { Link } from './link'
 
 const IntensifyImageContainer = styled.div`
   display: flex;
@@ -15,9 +17,11 @@ const IntensifyImageContainer = styled.div`
 
 interface IntensifyImageProps {
   intensifiedImage?: HTMLImageElement
-  isLoading: Boolean
+  isLoading: boolean
   onImageSelected: (files?: FileList) => void
   onRemoveBackgroundChanged: (isChecked: boolean) => void
+  useRemoveBg: boolean
+  isRemoveBgDisabled: boolean
 }
 
 const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
@@ -25,13 +29,27 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
   isLoading,
   onImageSelected,
   onRemoveBackgroundChanged,
+  useRemoveBg,
+  isRemoveBgDisabled,
 }) => {
   return (
     <IntensifyImageContainer>
       {isLoading ? <LoadingIndicator /> : null}
       {intensifiedImage?.src ? <ImagePreview url={intensifiedImage?.src} /> : null}
       <GifSelector onFileSelected={onImageSelected} />
-      <Checkbox name="UseRemoveBg" label="Remove background automatically" onChecked={onRemoveBackgroundChanged} />
+      {isRemoveBgDisabled ? (
+        <InfoText>
+          Can't access the <Link url="https://www.remove.bg/" text="remove.bg" /> API right now, please remove the
+          background manually
+        </InfoText>
+      ) : null}
+      <Checkbox
+        name="UseRemoveBg"
+        label="Remove background automatically"
+        onChecked={onRemoveBackgroundChanged}
+        isChecked={useRemoveBg}
+        disabled={isRemoveBgDisabled}
+      />
     </IntensifyImageContainer>
   )
 }

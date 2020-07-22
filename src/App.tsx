@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { getFileUrl, intensifyImage, removeBackground, imageToBase64, scaleImage, loadImage } from './utils/image'
+import { isRemoveBgRateLimited } from './utils/is-remove-bg-rate-limited'
 import { IntensifyImage } from './components/intensify-image'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
@@ -13,6 +14,7 @@ interface AppState {
   isLoading: boolean
   processingMessage: string
   useRemoveBg: boolean
+  removeBgRateLimited: boolean
 }
 
 interface AppProps {}
@@ -34,6 +36,11 @@ class App extends Component<AppProps, AppState> {
     isLoading: false,
     processingMessage: '',
     useRemoveBg: false,
+    removeBgRateLimited: false,
+  }
+
+  componentDidMount = () => {
+    isRemoveBgRateLimited().then((isRateLimited) => this.setState({ removeBgRateLimited: isRateLimited }))
   }
 
   onRemoveBackgroundChanged = (isChecked: boolean) => this.setState({ useRemoveBg: isChecked })
@@ -63,7 +70,7 @@ class App extends Component<AppProps, AppState> {
   }
 
   render() {
-    const { intensifiedImage, isLoading, processingMessage } = this.state
+    const { intensifiedImage, isLoading, processingMessage, useRemoveBg, removeBgRateLimited } = this.state
 
     return (
       <ThemeProvider theme={AppTheme}>
@@ -74,13 +81,14 @@ class App extends Component<AppProps, AppState> {
             onImageSelected={this.onImageSelected}
             onRemoveBackgroundChanged={this.onRemoveBackgroundChanged}
             intensifiedImage={intensifiedImage}
+            useRemoveBg={useRemoveBg}
+            isRemoveBgDisabled={removeBgRateLimited}
           />
           {processingMessage}
           <Footer>
             To create a silly slack emoji that bounces around with a transparent background just upload an image. For
-            best results use <Link url="https://www.remove.bg/" text="https://www.remove.bg/" /> to remove the
-            background and use a downscaled image.{' '}
-            <Link url="https://github.com/adriandelisle/intensifies-transparency" text="Source" />
+            best results use <Link url="https://www.remove.bg/" text="remove.bg" /> to remove the background and use a
+            downscaled image. <Link url="https://github.com/adriandelisle/intensifies-transparency" text="Source" />
           </Footer>
         </AppBody>
       </ThemeProvider>

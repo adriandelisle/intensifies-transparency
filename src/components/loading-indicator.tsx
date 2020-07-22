@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import styled, { ThemeProvider } from 'styled-components'
-import { AppTheme } from '../App-theme'
+import styled from 'styled-components'
 
 const Loader = styled.div`
   display: inline-block;
@@ -39,12 +38,10 @@ const Loader = styled.div`
 `
 
 export const LoadingIndicator: FunctionComponent<{}> = () => (
-  <ThemeProvider theme={AppTheme}>
-    <Loader>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </Loader>
-  </ThemeProvider>
+  <Loader>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </Loader>
 )

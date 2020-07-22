@@ -1,5 +1,6 @@
 import Animated_GIF from 'gif-transparency'
 import { RemoveBgResult, removeBackgroundFromImageBase64, RemoveBgBase64Options } from 'remove.bg'
+import { RemoveBg } from '../constants/'
 
 export const getFileUrl: (file: File) => string = (file: File) => URL.createObjectURL(file)
 
@@ -30,7 +31,7 @@ export const imageToBase64: (url: string) => Promise<string> = async (url: strin
 export const removeBackground: (base64Image: string) => Promise<HTMLImageElement> = async (base64Image: string) => {
   const options: RemoveBgBase64Options = {
     base64img: base64Image,
-    apiKey: 'a7X59GiZEEBMi8ReqEgRbxuJ', // normally this shouldn't be in here, but its just a free account and for demo purposes
+    apiKey: RemoveBg.apiKey, // normally this shouldn't be in here, but its just a free account and for demo purposes
     format: 'png',
     size: 'preview',
     type: 'auto',

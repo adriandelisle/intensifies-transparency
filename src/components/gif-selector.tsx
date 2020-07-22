@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { AppTheme } from '../App-theme'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 
 const StyledLabel = styled.label`
   display: block;
@@ -37,9 +36,7 @@ interface GifSelectorProps {
 
 export const GifSelector: FunctionComponent<GifSelectorProps> = ({ onFileSelected }: GifSelectorProps) => (
   <div className="gifSelector">
-    <ThemeProvider theme={AppTheme}>
-      <StyledLabel htmlFor="GifSelector">Select an image to intensify</StyledLabel>
-    </ThemeProvider>
+    <StyledLabel htmlFor="GifSelector">Select an image to intensify</StyledLabel>
     <StyledInput
       type="file"
       accept="image/*"
