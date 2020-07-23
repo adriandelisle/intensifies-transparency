@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import debounce from 'lodash.debounce'
 
 import { getFileUrl, intensifyImage, removeBackground, imageToBase64, scaleImage, loadImage } from './utils/image'
 import { isRemoveBgRateLimited } from './utils/is-remove-bg-rate-limited'
@@ -41,7 +40,7 @@ class App extends Component<AppProps, AppState> {
     scaledImage: undefined,
     isLoading: false,
     hasError: false,
-    intensity: 5,
+    intensity: 25,
     processingMessage: '',
     useRemoveBg: false,
     removeBgRateLimited: false,
@@ -66,17 +65,17 @@ class App extends Component<AppProps, AppState> {
     }
   }
 
-  onIntensityChanged = debounce(
-    (intensity: number) => {
-      const { scaledImage } = this.state
-      this.setState({ intensity })
-      if (scaledImage) {
-        this.intensify(scaledImage, intensity)
-      }
-    },
-    50,
-    { trailing: true }
-  )
+  onIntensityChange = (intensity: number) => {
+    this.setState({ intensity })
+  }
+
+  onIntensityChanged = (intensity: number) => {
+    const { scaledImage } = this.state
+    this.setState({ intensity })
+    if (scaledImage) {
+      this.intensify(scaledImage, intensity)
+    }
+  }
 
   onImageSelected = async (files?: FileList) => {
     const { intensity, useRemoveBg } = this.state
@@ -108,7 +107,15 @@ class App extends Component<AppProps, AppState> {
   }
 
   render() {
-    const { intensifiedImage, isLoading, processingMessage, useRemoveBg, removeBgRateLimited, hasError } = this.state
+    const {
+      intensifiedImage,
+      isLoading,
+      processingMessage,
+      useRemoveBg,
+      removeBgRateLimited,
+      hasError,
+      intensity,
+    } = this.state
 
     return (
       <ThemeProvider theme={AppTheme}>
@@ -120,10 +127,12 @@ class App extends Component<AppProps, AppState> {
             onImageSelected={this.onImageSelected}
             onRemoveBackgroundChanged={this.onRemoveBackgroundChanged}
             onIntensityChanged={this.onIntensityChanged}
+            onIntensityChange={this.onIntensityChange}
             intensifiedImage={intensifiedImage}
             useRemoveBg={useRemoveBg}
             hasError={hasError}
             isRemoveBgDisabled={removeBgRateLimited}
+            intensity={intensity}
           />
           <Footer>
             To create a silly slack emoji that bounces around with a transparent background just upload an image. For

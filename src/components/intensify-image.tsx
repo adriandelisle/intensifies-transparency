@@ -31,8 +31,10 @@ interface IntensifyImageProps {
   onImageSelected: (files?: FileList) => void
   onRemoveBackgroundChanged: (isChecked: boolean) => void
   onIntensityChanged: (value: number) => void
+  onIntensityChange: (value: number) => void
   useRemoveBg: boolean
   isRemoveBgDisabled: boolean
+  intensity: number
 }
 
 const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
@@ -43,8 +45,10 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
   onImageSelected,
   onRemoveBackgroundChanged,
   onIntensityChanged,
+  onIntensityChange,
   useRemoveBg,
   isRemoveBgDisabled,
+  intensity,
 }) => {
   return (
     <IntensifyImageContainer>
@@ -69,7 +73,7 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
           isChecked={useRemoveBg}
           disabled={isRemoveBgDisabled}
         />
-        <IntensitySlider onChange={onIntensityChanged} />
+        <IntensitySlider onChange={onIntensityChange} onChangeComplete={onIntensityChanged} value={intensity} />
       </ControlsContainer>
     </IntensifyImageContainer>
   )
