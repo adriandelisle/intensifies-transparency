@@ -5,6 +5,7 @@ import { isRemoveBgRateLimited } from './utils/is-remove-bg-rate-limited'
 import { IntensifyImage } from './components/intensify-image'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
+import { TextBlock } from './components/text-block'
 import { Link } from './components/link'
 
 import styled, { ThemeProvider } from 'styled-components'
@@ -135,9 +136,18 @@ class App extends Component<AppProps, AppState> {
             intensity={intensity}
           />
           <Footer>
-            To create a silly slack emoji that bounces around with a transparent background just upload an image. For
-            best results use <Link url="https://www.remove.bg/" text="remove.bg" /> to remove the background and use a
-            downscaled image. <Link url="https://github.com/adriandelisle/intensifies-transparency" text="Source" />
+            <TextBlock>
+              Create a silly slack emoji that bounces around with a transparent background just by upload an image. For
+              best results use <Link url="https://www.remove.bg/" text="remove.bg" /> to remove the background and use a
+              downscaled image.
+            </TextBlock>
+            <TextBlock>
+              Made by: Adrian De Lisle.{' '}
+              <Link url="https://github.com/adriandelisle/intensifies-transparency" text="Source on GitHub" />
+            </TextBlock>
+            <TextBlock>
+              Uses <Link url="https://fontawesome.com/license" text="Font Awesome Icons" />
+            </TextBlock>
           </Footer>
         </AppBody>
       </ThemeProvider>
