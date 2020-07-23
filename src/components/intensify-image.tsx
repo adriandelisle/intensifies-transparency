@@ -4,6 +4,11 @@ import styled from 'styled-components'
 import { GifSelector } from './gif-selector'
 import { ImagePreview } from './image-preview'
 import { LoadingIndicator } from './loading-indicator'
+import { Checkbox } from './checkbox'
+import { IntensitySlider } from './intensity-slider'
+import { InfoNotifcation } from './info-notification'
+import { ErrorNotifcation } from './error-notification'
+import { Link } from './link'
 
 const IntensifyImageContainer = styled.div`
   display: flex;
@@ -12,18 +17,64 @@ const IntensifyImageContainer = styled.div`
   justify-content: center;
 `
 
+const ControlsContainer = styled.div``
+
+const InfoContainer = styled.div`
+  max-width: 450px;
+`
+
 interface IntensifyImageProps {
   intensifiedImage?: HTMLImageElement
-  isLoading: Boolean
+  isLoading: boolean
+  processingMessage: string
+  hasError: boolean
   onImageSelected: (files?: FileList) => void
+  onRemoveBackgroundChanged: (isChecked: boolean) => void
+  onIntensityChanged: (value: number) => void
+  onIntensityChange: (value: number) => void
+  useRemoveBg: boolean
+  isRemoveBgDisabled: boolean
+  intensity: number
 }
 
-const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({ intensifiedImage, isLoading, onImageSelected }) => {
+const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
+  intensifiedImage,
+  isLoading,
+  processingMessage,
+  hasError,
+  onImageSelected,
+  onRemoveBackgroundChanged,
+  onIntensityChanged,
+  onIntensityChange,
+  useRemoveBg,
+  isRemoveBgDisabled,
+  intensity,
+}) => {
   return (
     <IntensifyImageContainer>
+      {intensifiedImage?.src && !isLoading ? <ImagePreview url={intensifiedImage?.src} /> : null}
       {isLoading ? <LoadingIndicator /> : null}
-      {intensifiedImage?.src ? <ImagePreview url={intensifiedImage?.src} /> : null}
+      {processingMessage}
       <GifSelector onFileSelected={onImageSelected} />
+      <InfoContainer>
+        {hasError ? <ErrorNotifcation>Something when wrong please refresh and try again.</ErrorNotifcation> : ''}
+        {isRemoveBgDisabled ? (
+          <InfoNotifcation>
+            Can't access the <Link url="https://www.remove.bg/" text="remove.bg" /> API right now, please remove the
+            background manually.
+          </InfoNotifcation>
+        ) : null}
+      </InfoContainer>
+      <ControlsContainer>
+        <Checkbox
+          name="UseRemoveBg"
+          label="Remove background automatically"
+          onChecked={onRemoveBackgroundChanged}
+          isChecked={useRemoveBg}
+          disabled={isRemoveBgDisabled}
+        />
+        <IntensitySlider onChange={onIntensityChange} onChangeComplete={onIntensityChanged} value={intensity} />
+      </ControlsContainer>
     </IntensifyImageContainer>
   )
 }

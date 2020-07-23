@@ -8,8 +8,11 @@ const AppTheme: DefaultTheme = {
       action: {
         main: '#e7a61a',
         hover: '#e833e2',
+        text: '#282c34',
       },
     },
+    info: '#00eeff',
+    error: '#ff3636',
     loading: '#1adee7',
     link: {
       normal: '#fff',

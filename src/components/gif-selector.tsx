@@ -1,14 +1,21 @@
 import React, { FunctionComponent } from 'react'
-import { AppTheme } from '../App-theme'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
+
+const GifSelectorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
 
 const StyledLabel = styled.label`
   display: block;
   padding: 5px 10px;
   margin: 14px;
   background-color: ${(props) => props.theme.colors.buttons.action.main};
-  color: #282c34;
+  color: ${(props) => props.theme.colors.buttons.action.text};
   cursor: pointer;
+  user-select: none;
   transition: all 0.15s ease;
   border: 1px solid black;
   font-size: calc(10px + 2vmin);
@@ -36,10 +43,8 @@ interface GifSelectorProps {
 }
 
 export const GifSelector: FunctionComponent<GifSelectorProps> = ({ onFileSelected }: GifSelectorProps) => (
-  <div className="gifSelector">
-    <ThemeProvider theme={AppTheme}>
-      <StyledLabel htmlFor="GifSelector">Select an image to intensify</StyledLabel>
-    </ThemeProvider>
+  <GifSelectorContainer>
+    <StyledLabel htmlFor="GifSelector">Select an image to intensify</StyledLabel>
     <StyledInput
       type="file"
       accept="image/*"
@@ -47,5 +52,5 @@ export const GifSelector: FunctionComponent<GifSelectorProps> = ({ onFileSelecte
       name="GifSelector"
       id="GifSelector"
     />
-  </div>
+  </GifSelectorContainer>
 )
