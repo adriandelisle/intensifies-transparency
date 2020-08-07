@@ -6,9 +6,8 @@ import { IntensifyImageVisual } from './intensify-image-visual'
 
 interface IntensifyImageProps {}
 
-const IntensifyImage: FunctionComponent<IntensifyImageProps> = (props) => {
+const IntensifyImage: FunctionComponent<IntensifyImageProps> = () => {
   const {
-    processingMessage,
     intensity,
     useRemoveBg,
     intensifiedImage,
@@ -24,7 +23,6 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = (props) => {
 
   return (
     <IntensifyImageVisual
-      {...props}
       isRemoveBgDisabled={removeBgRateLimited}
       onRemoveBackgroundChanged={(isChecked: boolean) => appDispatch({ type: 'useRemoveBg', useRemoveBg: isChecked })}
       onIntensityChange={(value: number) => appDispatch({ type: 'intensityChange', intensity: value })}
@@ -35,7 +33,6 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = (props) => {
       useRemoveBg={useRemoveBg}
       intensifiedImage={intensifiedImage}
       onImageSelected={onImageSelected}
-      processingMessage={processingMessage}
     />
   )
 }

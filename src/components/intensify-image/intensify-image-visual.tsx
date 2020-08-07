@@ -8,6 +8,7 @@ import { Checkbox } from '../checkbox'
 import { IntensitySlider } from '../intensity-slider'
 import { InfoNotifcation } from '../info-notification'
 import { ErrorNotifcation } from '../error-notification'
+import { ProcessingMessage } from '../processing-message'
 import { Link } from '../link'
 
 const IntensifyImageContainer = styled.div`
@@ -26,7 +27,6 @@ const InfoContainer = styled.div`
 interface IntensifyImageVisualProps {
   intensifiedImage?: HTMLImageElement
   isLoading: boolean
-  processingMessage: string
   hasError: boolean
   onImageSelected: (files?: FileList) => void
   onRemoveBackgroundChanged: (isChecked: boolean) => void
@@ -40,7 +40,6 @@ interface IntensifyImageVisualProps {
 const IntensifyImageVisual: FunctionComponent<IntensifyImageVisualProps> = ({
   intensifiedImage,
   isLoading,
-  processingMessage,
   hasError,
   onImageSelected,
   onRemoveBackgroundChanged,
@@ -54,7 +53,7 @@ const IntensifyImageVisual: FunctionComponent<IntensifyImageVisualProps> = ({
     <IntensifyImageContainer>
       {intensifiedImage?.src && !isLoading ? <ImagePreview url={intensifiedImage?.src} /> : null}
       {isLoading ? <LoadingIndicator /> : null}
-      {processingMessage}
+      <ProcessingMessage />
       <GifSelector onFileSelected={onImageSelected} />
       <InfoContainer>
         {hasError ? <ErrorNotifcation>Something when wrong please refresh and try again.</ErrorNotifcation> : ''}
