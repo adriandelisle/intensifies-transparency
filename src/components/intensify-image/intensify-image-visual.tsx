@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 
-import { GifSelector } from './gif-selector'
-import { ImagePreview } from './image-preview'
-import { LoadingIndicator } from './loading-indicator'
-import { Checkbox } from './checkbox'
-import { IntensitySlider } from './intensity-slider'
-import { InfoNotifcation } from './info-notification'
-import { ErrorNotifcation } from './error-notification'
-import { Link } from './link'
+import { GifSelector } from '../gif-selector'
+import { ImagePreview } from '../image-preview'
+import { LoadingIndicator } from '../loading-indicator'
+import { Checkbox } from '../checkbox'
+import { IntensitySlider } from '../intensity-slider'
+import { InfoNotifcation } from '../info-notification'
+import { ErrorNotifcation } from '../error-notification'
+import { Link } from '../link'
 
 const IntensifyImageContainer = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ const InfoContainer = styled.div`
   max-width: 450px;
 `
 
-interface IntensifyImageProps {
+interface IntensifyImageVisualProps {
   intensifiedImage?: HTMLImageElement
   isLoading: boolean
   processingMessage: string
@@ -37,7 +37,7 @@ interface IntensifyImageProps {
   intensity: number
 }
 
-const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
+const IntensifyImageVisual: FunctionComponent<IntensifyImageVisualProps> = ({
   intensifiedImage,
   isLoading,
   processingMessage,
@@ -79,4 +79,4 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
   )
 }
 
-export { IntensifyImage }
+export { IntensifyImageVisual }
