@@ -1,14 +1,15 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 
-import { GifSelector } from './gif-selector'
-import { ImagePreview } from './image-preview'
-import { LoadingIndicator } from './loading-indicator'
-import { Checkbox } from './checkbox'
-import { IntensitySlider } from './intensity-slider'
-import { InfoNotifcation } from './info-notification'
-import { ErrorNotifcation } from './error-notification'
-import { Link } from './link'
+import { GifSelector } from '../gif-selector'
+import { ImagePreview } from '../image-preview'
+import { LoadingIndicator } from '../loading-indicator'
+import { Checkbox } from '../checkbox'
+import { IntensitySlider } from '../intensity-slider'
+import { InfoNotifcation } from '../info-notification'
+import { ErrorNotifcation } from '../error-notification'
+import { ProcessingMessage } from '../processing-message'
+import { Link } from '../link'
 
 const IntensifyImageContainer = styled.div`
   display: flex;
@@ -23,10 +24,9 @@ const InfoContainer = styled.div`
   max-width: 450px;
 `
 
-interface IntensifyImageProps {
+interface IntensifyImageVisualProps {
   intensifiedImage?: HTMLImageElement
   isLoading: boolean
-  processingMessage: string
   hasError: boolean
   onImageSelected: (files?: FileList) => void
   onRemoveBackgroundChanged: (isChecked: boolean) => void
@@ -37,10 +37,9 @@ interface IntensifyImageProps {
   intensity: number
 }
 
-const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
+const IntensifyImageVisual: FunctionComponent<IntensifyImageVisualProps> = ({
   intensifiedImage,
   isLoading,
-  processingMessage,
   hasError,
   onImageSelected,
   onRemoveBackgroundChanged,
@@ -54,7 +53,7 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
     <IntensifyImageContainer>
       {intensifiedImage?.src && !isLoading ? <ImagePreview url={intensifiedImage?.src} /> : null}
       {isLoading ? <LoadingIndicator /> : null}
-      {processingMessage}
+      <ProcessingMessage />
       <GifSelector onFileSelected={onImageSelected} />
       <InfoContainer>
         {hasError ? <ErrorNotifcation>Something when wrong please refresh and try again.</ErrorNotifcation> : ''}
@@ -79,4 +78,4 @@ const IntensifyImage: FunctionComponent<IntensifyImageProps> = ({
   )
 }
 
-export { IntensifyImage }
+export { IntensifyImageVisual }
