@@ -36,7 +36,7 @@ const App: FunctionComponent<AppProps> = () => {
           <IntensifyImage />
           <Footer>
             <TextBlock>
-              Create a silly slack emoji that bounces around with a transparent background just by upload an image. For
+              Create a silly slack emoji that bounces around with a transparent background just by uploading an image. For
               best results use <Link url="https://www.remove.bg/" text="remove.bg" /> to remove the background and use a
               downscaled image.
             </TextBlock>
