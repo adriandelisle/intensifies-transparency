@@ -21,7 +21,7 @@ jobs:
         run: |
           yarn
           yarn build
-          touch out/.nojekyll
+          touch build/.nojekyll
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
