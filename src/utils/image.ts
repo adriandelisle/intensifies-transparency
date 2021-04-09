@@ -20,8 +20,10 @@ export const imageToBase64: (url: string) => Promise<string> = async (url: strin
   return await new Promise<string>((resolve, reject) => {
     const reader = new FileReader()
     reader.onloadend = () => {
-      const result = reader.result?.toString()
-      resolve(result)
+      if (reader?.result) {
+        const result: string = reader.result.toString()
+        resolve(result)
+      }
     }
     reader.onerror = reject
     reader.readAsDataURL(blob)

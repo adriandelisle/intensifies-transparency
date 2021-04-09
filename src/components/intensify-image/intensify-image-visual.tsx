@@ -9,6 +9,7 @@ import { IntensitySlider } from '../intensity-slider'
 import { InfoNotifcation } from '../info-notification'
 import { ErrorNotifcation } from '../error-notification'
 import { ProcessingMessage } from '../processing-message'
+import { DownloadButton } from '../download-button'
 import { Link } from '../link'
 
 const IntensifyImageContainer = styled.div`
@@ -54,6 +55,7 @@ const IntensifyImageVisual: FunctionComponent<IntensifyImageVisualProps> = ({
       {intensifiedImage?.src && !isLoading ? <ImagePreview url={intensifiedImage?.src} /> : null}
       {isLoading ? <LoadingIndicator /> : null}
       <ProcessingMessage />
+      <DownloadButton />
       <GifSelector onFileSelected={onImageSelected} />
       <InfoContainer>
         {hasError ? <ErrorNotifcation>Something when wrong please refresh and try again.</ErrorNotifcation> : ''}
