@@ -7,7 +7,7 @@ type Action =
   | { type: 'processingMessage'; message: string }
   | { type: 'loading'; isLoading: boolean }
   | { type: 'intensifiedImage'; intensifiedImage: HTMLImageElement }
-  | { type: 'scaledImage'; scaledImage: HTMLImageElement }
+  | { type: 'scaledImage'; scaledImage: HTMLImageElement; filename: string }
   | { type: 'error'; hasError: boolean }
   | { type: 'useRemoveBg'; useRemoveBg: boolean }
   | { type: 'intensityChange'; intensity: number }
@@ -17,6 +17,7 @@ type Dispatch = (action: Action) => void
 type State = {
   intensifiedImage?: HTMLImageElement
   scaledImage?: HTMLImageElement
+  filename?: string
   isLoading: boolean
   hasError: boolean
   intensity: number
@@ -48,13 +49,17 @@ function appReducer(state: State, action: Action) {
       return { ...state, processingMessage: action.message }
     }
     case 'loading': {
-      return { ...state, isLoading: action.isLoading }
+      if (action.isLoading) {
+        return { ...state, ...initialState, isLoading: action.isLoading }
+      } else {
+        return { ...state, isLoading: action.isLoading }
+      }
     }
     case 'intensifiedImage': {
       return { ...state, intensifiedImage: action.intensifiedImage }
     }
     case 'scaledImage': {
-      return { ...state, scaledImage: action.scaledImage }
+      return { ...state, scaledImage: action.scaledImage, filename: action.filename }
     }
     case 'error': {
       return { ...state, hasError: action.hasError }
@@ -114,7 +119,7 @@ async function imageSelected(dispatch: Dispatch, intensity: number, useRemoveBg:
           scaledImage = await removeBackground(base64Image)
         }
         intensify(dispatch, scaledImage, intensity)
-        dispatch({ type: 'scaledImage', scaledImage })
+        dispatch({ type: 'scaledImage', scaledImage, filename: file?.name })
       } catch (error) {
         dispatch({ type: 'error', hasError: true })
         console.log(error)
