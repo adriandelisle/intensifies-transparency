@@ -1,0 +1,8 @@
+{
+  "short_name": "Intensifies Transparency",
+  "name": "Intensifies Transparency",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
