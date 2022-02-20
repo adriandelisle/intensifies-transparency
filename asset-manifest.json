@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/static/js/main.b472a35c.chunk.js",
+    "main.js.map": "/static/js/main.b472a35c.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.bae47377.js",
+    "runtime-main.js.map": "/static/js/runtime-main.bae47377.js.map",
+    "static/css/2.8e54585f.chunk.css": "/static/css/2.8e54585f.chunk.css",
+    "static/js/2.5f6283ec.chunk.js": "/static/js/2.5f6283ec.chunk.js",
+    "static/js/2.5f6283ec.chunk.js.map": "/static/js/2.5f6283ec.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.8e54585f.chunk.css.map": "/static/css/2.8e54585f.chunk.css.map",
+    "static/css/main.6dea0f05.chunk.css.map": "/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.5f6283ec.chunk.js.LICENSE.txt": "/static/js/2.5f6283ec.chunk.js.LICENSE.txt",
+    "static/media/check-solid.5dcf9568.svg": "/static/media/check-solid.5dcf9568.svg",
+    "static/media/exclamation-triangle-solid.03d439fa.svg": "/static/media/exclamation-triangle-solid.03d439fa.svg",
+    "static/media/question-solid.10f55fd6.svg": "/static/media/question-solid.10f55fd6.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bae47377.js",
+    "static/css/2.8e54585f.chunk.css",
+    "static/js/2.5f6283ec.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.b472a35c.chunk.js"
+  ]
+}
